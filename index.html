@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QCM Interactif</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 QCM Interactif</h1>
+            <p>Testez vos connaissances avec style</p>
+        </div>
+
+        <div class="controls" id="controls">
+            <div class="control-group">
+                <label>Configuration du QCM</label>
+                <div class="control-row">
+                    <div>
+                        <label for="questionCount">Nombre de questions :</label>
+                        <input type="number" id="questionCount" min="1" max="50" value="5">
+                    </div>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="randomOrder">
+                        <label for="randomOrder">Questions aléatoires</label>
+                    </div>
+                </div>
+            </div>
+            <button class="start-btn" onclick="startQuiz()">🚀 Commencer le QCM</button>
+        </div>
+
+        <div class="loading" id="loading" style="display: none;">
+            Chargement du QCM...
+        </div>
+
+        <div class="quiz-container" id="quizContainer">
+            <div class="question-header">
+                <div class="question-counter" id="questionCounter"></div>
+                <div class="score" id="scoreDisplay">Score: 0/0</div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-text" id="questionText"></div>
+                <div class="options" id="optionsContainer"></div>
+            </div>
+
+            <div class="navigation">
+                <button class="nav-btn" id="prevBtn" onclick="previousQuestion()" disabled>⬅️ Précédent</button>
+                <button class="home-btn" onclick="goHome()">🏠 Accueil</button>
+                <button class="nav-btn" id="nextBtn" onclick="nextQuestion()" disabled>Suivant ➡️</button>
+            </div>
+        </div>
+
+        <div class="results" id="results">
+            <h2>🎉 QCM Terminé !</h2>
+            <div class="final-score" id="finalScore"></div>
+            <p id="resultMessage"></p>
+            
+            <!-- Section des questions fausses -->
+            <div class="wrong-answers-section" id="wrongAnswersSection">
+                <h3>📚 Questions à revoir :</h3>
+                <div class="wrong-answers-container" id="wrongAnswersContainer">
+                    <!-- Les questions fausses s'afficheront ici -->
+                </div>
+            </div>
+            
+            <button class="restart-btn" onclick="resetQuiz()">🔄 Recommencer</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
