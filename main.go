@@ -6,7 +6,9 @@ import (
 	"io/ioutil"
 	"log"
 	"math/rand"
+	"net"
 	"net/http"
+	"os"
 	"strconv"
 	"time"
 )
@@ -44,15 +46,49 @@ var qcmData QCM
 func main() {
 	loadQCMData()
 
+	// Configuration du host et port
+	host := getEnv("HOST", "0.0.0.0")
+	port := getEnv("PORT", "8080")
+	addr := fmt.Sprintf("%s:%s", host, port)
+
+	// Servir les fichiers statiques
 	http.Handle("/style.css", http.FileServer(http.Dir("./")))
 	http.Handle("/script.js", http.FileServer(http.Dir("./")))
 
+	// Configuration des routes
 	http.HandleFunc("/", serveHTML)
 	http.HandleFunc("/api/qcm", getQCM)
 	http.HandleFunc("/api/check", checkAnswer)
 
-	fmt.Println("Serveur QCM démarré sur http://localhost:8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	// Démarrage du serveur
+	fmt.Printf("Serveur QCM démarré sur http://%s\n", addr)
+	fmt.Printf("Accès local: http://localhost:%s\n", port)
+	fmt.Printf("Accès réseau: http://%s:%s\n", getLocalIP(), port)
+	log.Fatal(http.ListenAndServe(addr, nil))
+}
+
+func getEnv(key, defaultValue string) string {
+	value := os.Getenv(key)
+	if value == "" {
+		return defaultValue
+	}
+	return value
+}
+
+func getLocalIP() string {
+	addrs, err := net.InterfaceAddrs()
+	if err != nil {
+		return "127.0.0.1"
+	}
+
+	for _, address := range addrs {
+		if ipnet, ok := address.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
+			if ipnet.IP.To4() != nil {
+				return ipnet.IP.String()
+			}
+		}
+	}
+	return "127.0.0.1"
 }
 
 func loadQCMData() {
