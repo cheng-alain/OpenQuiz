@@ -1,37 +1,37 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QCM Interactif</title>
+    <title>Interactive Quiz</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🎯 QCM Interactif</h1>
-            <p>Testez vos connaissances avec style</p>
+            <h1>🎯 Interactive Quiz</h1>
+            <p>Test your knowledge with style</p>
         </div>
 
         <div class="controls" id="controls">
             <div class="control-group">
-                <label>Configuration du QCM</label>
+                <label>Quiz Configuration</label>
                 <div class="control-row">
                     <div>
-                        <label for="questionCount">Nombre de questions :</label>
+                        <label for="questionCount">Number of questions:</label>
                         <input type="number" id="questionCount" min="1" max="50" value="5">
                     </div>
                     <div class="checkbox-container">
                         <input type="checkbox" id="randomOrder">
-                        <label for="randomOrder">Questions aléatoires</label>
+                        <label for="randomOrder">Random questions</label>
                     </div>
                 </div>
             </div>
-            <button class="start-btn" onclick="startQuiz()">🚀 Commencer le QCM</button>
+            <button class="start-btn" onclick="startQuiz()">🚀 Start Quiz</button>
         </div>
 
         <div class="loading" id="loading" style="display: none;">
-            Chargement du QCM...
+            Loading quiz...
         </div>
 
         <div class="quiz-container" id="quizContainer">
@@ -51,26 +51,24 @@
             </div>
 
             <div class="navigation">
-                <button class="nav-btn" id="prevBtn" onclick="previousQuestion()" disabled>⬅️ Précédent</button>
-                <button class="home-btn" onclick="goHome()">🏠 Accueil</button>
-                <button class="nav-btn" id="nextBtn" onclick="nextQuestion()" disabled>Suivant ➡️</button>
+                <button class="nav-btn" id="prevBtn" onclick="previousQuestion()" disabled>⬅️ Previous</button>
+                <button class="home-btn" onclick="goHome()">🏠 Home</button>
+                <button class="nav-btn" id="nextBtn" onclick="nextQuestion()" disabled>Next ➡️</button>
             </div>
         </div>
 
         <div class="results" id="results">
-            <h2>🎉 QCM Terminé !</h2>
+            <h2>🎉 Quiz Finished!</h2>
             <div class="final-score" id="finalScore"></div>
             <p id="resultMessage"></p>
             
-            <!-- Section des questions fausses -->
             <div class="wrong-answers-section" id="wrongAnswersSection">
-                <h3>📚 Questions à revoir :</h3>
+                <h3>📚 Questions to review:</h3>
                 <div class="wrong-answers-container" id="wrongAnswersContainer">
-                    <!-- Les questions fausses s'afficheront ici -->
                 </div>
             </div>
             
-            <button class="restart-btn" onclick="resetQuiz()">🔄 Recommencer</button>
+            <button class="restart-btn" onclick="resetQuiz()">🔄 Restart</button>
         </div>
     </div>
 
