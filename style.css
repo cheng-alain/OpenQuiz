@@ -147,6 +147,13 @@ input[type="number"]:focus {
     gap: 15px;
 }
 
+.question-instruction {
+    font-style: italic;
+    color: #6c757d;
+    margin-bottom: 15px;
+    font-size: 0.9em;
+}
+
 .option {
     background: white;
     border: 2px solid #e9ecef;
@@ -167,6 +174,11 @@ input[type="number"]:focus {
 .option.selected {
     border-color: #667eea;
     background: #f0f4ff;
+}
+
+.option.partially-correct {
+    border-color: #ffc107;
+    background: #fff3cd;
 }
 
 .option.correct {

@@ -56,6 +56,15 @@ function displayQuestion() {
     document.getElementById('questionText').textContent = question.question;
     document.getElementById('questionCounter').textContent = `Question ${currentQuestionIndex + 1}/${totalQuestions}`;
     
+    // Afficher instruction pour questions à réponses multiples
+    const instructionElement = document.getElementById('questionInstruction');
+    if (Array.isArray(question.correct) && question.correct.length > 1) {
+        instructionElement.textContent = `(Sélectionnez ${question.correct.length} réponses)`;
+        instructionElement.style.display = 'block';
+    } else {
+        instructionElement.style.display = 'none';
+    }
+    
     const optionsContainer = document.getElementById('optionsContainer');
     optionsContainer.innerHTML = '';
 
@@ -68,8 +77,11 @@ function displayQuestion() {
         `;
         optionElement.onclick = () => selectOption(index);
         
-        if (userAnswers[question.id] === index) {
+        // Vérifier si cette option est sélectionnée
+        const selectedAnswers = userAnswers[question.id] || [];
+        if (selectedAnswers.includes(index)) {
             optionElement.classList.add('selected');
+            optionElement.querySelector('.option-letter').classList.add('selected');
         }
         
         optionsContainer.appendChild(optionElement);
@@ -81,18 +93,52 @@ function displayQuestion() {
 
 function selectOption(optionIndex) {
     const question = questions[currentQuestionIndex];
-    userAnswers[question.id] = optionIndex;
+    const isMultipleChoice = Array.isArray(question.correct) && question.correct.length > 1;
+    
+    if (!userAnswers[question.id]) {
+        userAnswers[question.id] = isMultipleChoice ? [] : null;
+    }
+    
+    if (isMultipleChoice) {
+        // Gestion réponses multiples
+        const selectedAnswers = userAnswers[question.id];
+        const optionAlreadySelected = selectedAnswers.includes(optionIndex);
+        
+        if (optionAlreadySelected) {
+            // Déselectionner
+            userAnswers[question.id] = selectedAnswers.filter(index => index !== optionIndex);
+        } else {
+            // Sélectionner (avec limite)
+            if (selectedAnswers.length < question.correct.length) {
+                userAnswers[question.id].push(optionIndex);
+            }
+        }
+    } else {
+        // Gestion réponse unique
+        userAnswers[question.id] = optionIndex;
+    }
     
     // Mettre à jour l'affichage
     const options = document.querySelectorAll('.option');
     options.forEach((option, index) => {
+        const optionLetter = option.querySelector('.option-letter');
         option.classList.remove('selected');
-        if (index === optionIndex) {
-            option.classList.add('selected');
+        optionLetter.classList.remove('selected');
+        
+        if (isMultipleChoice) {
+            if (userAnswers[question.id].includes(index)) {
+                option.classList.add('selected');
+                optionLetter.classList.add('selected');
+            }
+        } else {
+            if (userAnswers[question.id] === index) {
+                option.classList.add('selected');
+                optionLetter.classList.add('selected');
+            }
         }
     });
     
-    document.getElementById('nextBtn').disabled = false;
+    updateUI();
 }
 
 async function nextQuestion() {
@@ -118,13 +164,32 @@ async function nextQuestion() {
                 score++;
             } else {
                 // Stocker la question fausse avec les détails
+                const question = questions[currentQuestionIndex];
+                const isMultipleChoice = Array.isArray(question.correct) && question.correct.length > 1;
+                
+                let userAnswerText, correctAnswerText;
+                
+                if (isMultipleChoice) {
+                    const userSelectedIndexes = userAnswers[question.id] || [];
+                    const correctIndexes = question.correct;
+                    
+                    userAnswerText = userSelectedIndexes.length > 0 
+                        ? userSelectedIndexes.map(i => question.options[i]).join(', ')
+                        : 'Aucune réponse';
+                    correctAnswerText = correctIndexes.map(i => question.options[i]).join(', ');
+                } else {
+                    userAnswerText = userAnswers[question.id] !== undefined 
+                        ? question.options[userAnswers[question.id]]
+                        : 'Aucune réponse';
+                    correctAnswerText = question.options[result.correctAnswer];
+                }
+                
                 wrongAnswers.push({
                     question: question.question,
-                    userAnswer: question.options[userAnswers[question.id]],
-                    correctAnswer: question.options[result.correctAnswer],
+                    userAnswer: userAnswerText,
+                    correctAnswer: correctAnswerText,
                     options: question.options,
-                    userIndex: userAnswers[question.id],
-                    correctIndex: result.correctAnswer
+                    isMultipleChoice: isMultipleChoice
                 });
             }
             
@@ -145,13 +210,37 @@ async function nextQuestion() {
 }
 
 function showCorrection(result) {
+    const question = questions[currentQuestionIndex];
+    const isMultipleChoice = Array.isArray(question.correct) && question.correct.length > 1;
     const options = document.querySelectorAll('.option');
+    
     options.forEach((option, index) => {
-        if (index === result.correctAnswer) {
-            option.classList.add('correct');
-        } else if (index === userAnswers[questions[currentQuestionIndex].id] && !result.correct) {
-            option.classList.add('incorrect');
+        const optionLetter = option.querySelector('.option-letter');
+        
+        if (isMultipleChoice) {
+            const correctAnswers = question.correct;
+            const userAnswers_current = userAnswers[question.id] || [];
+            
+            if (correctAnswers.includes(index)) {
+                // C'est une bonne réponse
+                option.classList.add('correct');
+                optionLetter.classList.add('correct');
+            } else if (userAnswers_current.includes(index)) {
+                // Utilisateur a choisi une mauvaise réponse
+                option.classList.add('incorrect');
+                optionLetter.classList.add('incorrect');
+            }
+        } else {
+            // Réponse unique
+            if (index === result.correctAnswer) {
+                option.classList.add('correct');
+                optionLetter.classList.add('correct');
+            } else if (index === userAnswers[question.id] && !result.correct) {
+                option.classList.add('incorrect');
+                optionLetter.classList.add('incorrect');
+            }
         }
+        
         option.onclick = null;
     });
     
@@ -166,8 +255,23 @@ function previousQuestion() {
 }
 
 function updateUI() {
+    const question = questions[currentQuestionIndex];
+    const isMultipleChoice = Array.isArray(question?.correct) && question.correct.length > 1;
+    
     document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
-    document.getElementById('nextBtn').disabled = userAnswers[questions[currentQuestionIndex]?.id] === undefined;
+    
+    // Vérifier si une réponse est donnée
+    let hasAnswer = false;
+    if (question) {
+        if (isMultipleChoice) {
+            const selectedAnswers = userAnswers[question.id] || [];
+            hasAnswer = selectedAnswers.length === question.correct.length;
+        } else {
+            hasAnswer = userAnswers[question.id] !== undefined;
+        }
+    }
+    
+    document.getElementById('nextBtn').disabled = !hasAnswer;
 }
 
 function updateProgress() {
