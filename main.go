@@ -46,24 +46,20 @@ var qcmData QCM
 func main() {
 	loadQCMData()
 
-	// Configuration du host et port
 	host := getEnv("HOST", "0.0.0.0")
 	port := getEnv("PORT", "8080")
 	addr := fmt.Sprintf("%s:%s", host, port)
 
-	// Servir les fichiers statiques
 	http.Handle("/style.css", http.FileServer(http.Dir("./")))
 	http.Handle("/script.js", http.FileServer(http.Dir("./")))
 
-	// Configuration des routes
 	http.HandleFunc("/", serveHTML)
 	http.HandleFunc("/api/qcm", getQCM)
 	http.HandleFunc("/api/check", checkAnswer)
 
-	// Démarrage du serveur
-	fmt.Printf("Serveur QCM démarré sur http://%s\n", addr)
-	fmt.Printf("Accès local: http://localhost:%s\n", port)
-	fmt.Printf("Accès réseau: http://%s:%s\n", getLocalIP(), port)
+	fmt.Printf("QCM server started at http://%s\n", addr)
+	fmt.Printf("Local access: http://localhost:%s\n", port)
+	fmt.Printf("Network access: http://%s:%s\n", getLocalIP(), port)
 	log.Fatal(http.ListenAndServe(addr, nil))
 }
 
@@ -94,15 +90,15 @@ func getLocalIP() string {
 func loadQCMData() {
 	data, err := ioutil.ReadFile("qcm.json")
 	if err != nil {
-		log.Fatal("Erreur lors de la lecture du fichier qcm.json:", err)
+		log.Fatal("Error reading qcm.json file:", err)
 	}
 
 	err = json.Unmarshal(data, &qcmData)
 	if err != nil {
-		log.Fatal("Erreur lors du parsing JSON:", err)
+		log.Fatal("Error parsing JSON:", err)
 	}
 
-	fmt.Printf("QCM chargé: %s avec %d questions\n", qcmData.Title, len(qcmData.Questions))
+	fmt.Printf("QCM loaded: %s with %d questions\n", qcmData.Title, len(qcmData.Questions))
 }
 
 func enableCORS(w http.ResponseWriter) {
@@ -160,14 +156,14 @@ func checkAnswer(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.Method != "POST" {
-		http.Error(w, "Méthode non autorisée", http.StatusMethodNotAllowed)
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
 
 	var answer Answer
 	err := json.NewDecoder(r.Body).Decode(&answer)
 	if err != nil {
-		http.Error(w, "Données invalides", http.StatusBadRequest)
+		http.Error(w, "Invalid data", http.StatusBadRequest)
 		return
 	}
 
@@ -182,7 +178,7 @@ func checkAnswer(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if !found {
-		http.Error(w, "Question non trouvée", http.StatusNotFound)
+		http.Error(w, "Question not found", http.StatusNotFound)
 		return
 	}
 
@@ -192,7 +188,7 @@ func checkAnswer(w http.ResponseWriter, r *http.Request) {
 	case float64:
 		userAnswer, ok := answer.Answer.(float64)
 		if !ok {
-			http.Error(w, "Format de réponse invalide", http.StatusBadRequest)
+			http.Error(w, "Invalid answer format", http.StatusBadRequest)
 			return
 		}
 		isCorrect = int(userAnswer) == int(correctAnswer)
@@ -200,7 +196,7 @@ func checkAnswer(w http.ResponseWriter, r *http.Request) {
 	case []interface{}:
 		userAnswers, ok := answer.Answer.([]interface{})
 		if !ok {
-			http.Error(w, "Format de réponse invalide", http.StatusBadRequest)
+			http.Error(w, "Invalid answer format", http.StatusBadRequest)
 			return
 		}
 
@@ -236,7 +232,7 @@ func checkAnswer(w http.ResponseWriter, r *http.Request) {
 		}
 
 	default:
-		http.Error(w, "Format de question invalide", http.StatusBadRequest)
+		http.Error(w, "Invalid question format", http.StatusBadRequest)
 		return
 	}
 
