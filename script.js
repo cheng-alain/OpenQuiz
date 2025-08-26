@@ -188,7 +188,7 @@ async function nextQuestion() {
             setTimeout(() => {
                 currentQuestionIndex++;
                 displayQuestion();
-            }, 2000);
+            }, 1000);
             
         } catch (error) {
             console.error('Error:', error);
