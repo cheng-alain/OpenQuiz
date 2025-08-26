@@ -233,19 +233,13 @@ function showCorrection(result) {
     updateScore();
 }
 
-function previousQuestion() {
-    if (currentQuestionIndex > 0) {
-        currentQuestionIndex--;
-        displayQuestion();
-    }
-}
-
 function updateUI() {
     const question = questions[currentQuestionIndex];
     const isMultipleChoice = Array.isArray(question?.correct) && question.correct.length > 1;
     
-    document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
-    
+    // const prevBtn = document.getElementById('prevBtn');
+    // if (prevBtn) prevBtn.disabled = currentQuestionIndex === 0; 
+       
     let hasAnswer = false;
     if (question) {
         if (isMultipleChoice) {
@@ -256,7 +250,8 @@ function updateUI() {
         }
     }
     
-    document.getElementById('nextBtn').disabled = !hasAnswer;
+    const nextBtn = document.getElementById('nextBtn');
+    if (nextBtn) nextBtn.disabled = !hasAnswer;
 }
 
 function updateProgress() {
@@ -321,6 +316,13 @@ function displayWrongAnswers() {
         });
     }
 }
+
+// function previousQuestion() {
+//     if (currentQuestionIndex > 0) {
+//         currentQuestionIndex--;
+//         displayQuestion();
+//     }
+// }
 
 function goHome() {
     if (confirm('Are you sure you want to quit the quiz?')) {
