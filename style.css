@@ -50,6 +50,12 @@ body {
     color: #495057;
 }
 
+#maxQuestions {
+    font-weight: 400;
+    color: #6c757d;
+    font-size: 0.9em;
+}
+
 .control-row {
     display: flex;
     gap: 20px;

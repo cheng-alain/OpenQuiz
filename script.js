@@ -4,6 +4,35 @@ let userAnswers = {};
 let score = 0;
 let totalQuestions = 0;
 let wrongAnswers = [];
+let maxQuestionsAvailable = 0;
+
+window.addEventListener('DOMContentLoaded', async function() {
+    const maxQuestionsElement = document.getElementById('maxQuestions');
+    if (!maxQuestionsElement) {
+        console.error('Element maxQuestions not found');
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/qcm');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        maxQuestionsAvailable = data.questions.length;
+        
+        maxQuestionsElement.textContent = `(max: ${maxQuestionsAvailable})`;
+        
+        const questionCountInput = document.getElementById('questionCount');
+        if (questionCountInput) {
+            questionCountInput.max = maxQuestionsAvailable;
+        }
+        
+    } catch (error) {
+        console.error('Error loading total questions:', error);
+        maxQuestionsElement.textContent = '(max: ?)';
+    }
+});
 
 async function startQuiz() {
     const questionCount = document.getElementById('questionCount').value;
@@ -274,11 +303,11 @@ function showResults() {
     if (percentage >= 80) {
         message = '🏆 Excellent! You mastered the subject perfectly!';
     } else if (percentage >= 60) {
-        message = '👍 Well done! A few revisions and you’ll be perfect!';
+        message = '👍 Well done! A few revisions and you\'ll be perfect!';
     } else if (percentage >= 40) {
-        message = '📚 Not bad, but there’s still work to do!';
+        message = '📚 Not bad, but there\'s still work to do!';
     } else {
-        message = '💪 Don’t get discouraged, keep learning!';
+        message = '💪 Don\'t get discouraged, keep learning!';
     }
     
     document.getElementById('resultMessage').textContent = message;

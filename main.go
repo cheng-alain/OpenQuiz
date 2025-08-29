@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -97,6 +98,15 @@ func loadQCMData() {
 	if err != nil {
 		log.Fatal("Error parsing JSON:", err)
 	}
+
+	var validQuestions []Question
+	for _, question := range qcmData.Questions {
+		questionText := strings.TrimSpace(question.Question)
+		if questionText != "" && question.ID > 0 {
+			validQuestions = append(validQuestions, question)
+		}
+	}
+	qcmData.Questions = validQuestions
 
 	fmt.Printf("QCM loaded: %s with %d questions\n", qcmData.Title, len(qcmData.Questions))
 }
