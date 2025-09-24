@@ -2,9 +2,9 @@
   "themes": [
     {
       "id": "web-programming",
-      "title": "Web Programming Quiz",
-      "description": "Test your knowledge in HTML, CSS, JavaScript, and web development fundamentals",
-      "icon": "💻",
+      "title": "Web Development",
+      "description": "Assess your knowledge in HTML, CSS, JavaScript, and modern web development practices",
+      "icon": "WEB",
       "difficulty": "Intermediate",
       "questions_count": 10,
       "file": "web-programming.json"

@@ -9,12 +9,12 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🎯 Interactive Quiz</h1>
-            <p>Test your knowledge with style</p>
+            <h1>Knowledge Assessment Platform</h1>
+            <p>Test your technical expertise</p>
         </div>
 
         <div class="theme-selection" id="themeSelection">
-            <h2>📚 Choose a Quiz Theme</h2>
+            <h2>Select Assessment Topic</h2>
             <div class="themes-container" id="themesContainer">
                 <div class="loading">Loading themes...</div>
             </div>
@@ -22,7 +22,7 @@
 
         <div class="controls" id="controls" style="display: none;">
             <div class="controls-header">
-                <button class="back-btn" onclick="goBackToThemes()">⬅️ Back to Themes</button>
+                <button class="back-btn" onclick="goBackToThemes()">← Back to Topics</button>
                 <div class="selected-theme-info" id="selectedThemeInfo"></div>
             </div>
 
@@ -39,7 +39,7 @@
                     </div>
                 </div>
             </div>
-            <button class="start-btn" onclick="startQuiz()">🚀 Start Quiz</button>
+            <button class="start-btn" onclick="startQuiz()">Start Assessment</button>
         </div>
 
         <div class="loading" id="loading" style="display: none;">
@@ -63,23 +63,23 @@
             </div>
 
             <div class="navigation">
-                <button class="home-btn" onclick="goHome()">🏠 Home</button>
-                <button class="nav-btn" id="nextBtn" onclick="nextQuestion()" disabled>Next ➡️</button>
+                <button class="home-btn" onclick="goHome()">Home</button>
+                <button class="nav-btn" id="nextBtn" onclick="nextQuestion()" disabled>Next →</button>
             </div>
         </div>
 
         <div class="results" id="results">
-            <h2>🎉 Quiz Finished!</h2>
+            <h2>Assessment Complete</h2>
             <div class="final-score" id="finalScore"></div>
             <p id="resultMessage"></p>
             
             <div class="wrong-answers-section" id="wrongAnswersSection">
-                <h3>📚 Questions to review:</h3>
+                <h3>Questions to review:</h3>
                 <div class="wrong-answers-container" id="wrongAnswersContainer">
                 </div>
             </div>
             
-            <button class="restart-btn" onclick="resetQuiz()">🔄 Restart</button>
+            <button class="restart-btn" onclick="resetQuiz()">New Assessment</button>
         </div>
     </div>
 
