@@ -13,7 +13,19 @@
             <p>Test your knowledge with style</p>
         </div>
 
-        <div class="controls" id="controls">
+        <div class="theme-selection" id="themeSelection">
+            <h2>📚 Choose a Quiz Theme</h2>
+            <div class="themes-container" id="themesContainer">
+                <div class="loading">Loading themes...</div>
+            </div>
+        </div>
+
+        <div class="controls" id="controls" style="display: none;">
+            <div class="controls-header">
+                <button class="back-btn" onclick="goBackToThemes()">⬅️ Back to Themes</button>
+                <div class="selected-theme-info" id="selectedThemeInfo"></div>
+            </div>
+
             <div class="control-group">
                 <label>Quiz Configuration</label>
                 <div class="control-row">

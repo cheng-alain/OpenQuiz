@@ -5,44 +5,121 @@ let score = 0;
 let totalQuestions = 0;
 let wrongAnswers = [];
 let maxQuestionsAvailable = 0;
+let selectedTheme = null;
+let themes = [];
 
 window.addEventListener('DOMContentLoaded', async function() {
-    const maxQuestionsElement = document.getElementById('maxQuestions');
-    if (!maxQuestionsElement) {
-        console.error('Element maxQuestions not found');
-        return;
-    }
-    
+    await loadThemes();
+});
+
+async function loadThemes() {
     try {
-        const response = await fetch('/api/qcm');
+        const response = await fetch('/api/themes');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        maxQuestionsAvailable = data.questions.length;
-        
+        themes = data.themes;
+
+        displayThemes();
+
+    } catch (error) {
+        console.error('Error loading themes:', error);
+        document.getElementById('themesContainer').innerHTML = '<p>Error loading themes</p>';
+    }
+}
+
+function displayThemes() {
+    const container = document.getElementById('themesContainer');
+    container.innerHTML = '';
+
+    themes.forEach(theme => {
+        const themeCard = document.createElement('div');
+        themeCard.className = 'theme-card';
+        themeCard.innerHTML = `
+            <div class="theme-icon">${theme.icon}</div>
+            <div class="theme-content">
+                <h3>${theme.title}</h3>
+                <p>${theme.description}</p>
+                <div class="theme-meta">
+                    <span class="difficulty ${theme.difficulty.toLowerCase()}">${theme.difficulty}</span>
+                    <span class="question-count">${theme.questions_count} questions</span>
+                </div>
+            </div>
+        `;
+        themeCard.onclick = () => selectTheme(theme);
+        container.appendChild(themeCard);
+    });
+}
+
+async function selectTheme(theme) {
+    selectedTheme = theme;
+
+    document.getElementById('themeSelection').style.display = 'none';
+    document.getElementById('controls').style.display = 'block';
+
+    updateSelectedThemeInfo();
+    await updateMaxQuestions();
+}
+
+function updateSelectedThemeInfo() {
+    const infoElement = document.getElementById('selectedThemeInfo');
+    if (selectedTheme && infoElement) {
+        infoElement.innerHTML = `
+            <div class="selected-theme">
+                <span class="theme-icon-small">${selectedTheme.icon}</span>
+                <span class="theme-title-small">${selectedTheme.title}</span>
+            </div>
+        `;
+    }
+}
+
+function goBackToThemes() {
+    document.getElementById('controls').style.display = 'none';
+    document.getElementById('themeSelection').style.display = 'block';
+    selectedTheme = null;
+}
+
+async function updateMaxQuestions() {
+    const maxQuestionsElement = document.getElementById('maxQuestions');
+    if (!maxQuestionsElement || !selectedTheme) return;
+
+    try {
+        const response = await fetch(`/api/qcm?theme=${selectedTheme.id}&count=999`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        maxQuestionsAvailable = data.total;
+
         maxQuestionsElement.textContent = `(max: ${maxQuestionsAvailable})`;
-        
+
         const questionCountInput = document.getElementById('questionCount');
         if (questionCountInput) {
             questionCountInput.max = maxQuestionsAvailable;
+            questionCountInput.value = Math.min(5, maxQuestionsAvailable);
         }
-        
+
     } catch (error) {
-        console.error('Error loading total questions:', error);
+        console.error('Error loading theme questions:', error);
         maxQuestionsElement.textContent = '(max: ?)';
     }
-});
+}
 
 async function startQuiz() {
+    if (!selectedTheme) {
+        alert('Please select a theme first');
+        return;
+    }
+
     const questionCount = document.getElementById('questionCount').value;
     const randomOrder = document.getElementById('randomOrder').checked;
-    
+
     document.getElementById('controls').style.display = 'none';
     document.getElementById('loading').style.display = 'block';
 
     try {
-        let url = `/api/qcm?count=${questionCount}`;
+        let url = `/api/qcm?theme=${selectedTheme.id}&count=${questionCount}`;
         if (randomOrder) {
             url += '&random=true';
         }
@@ -353,12 +430,14 @@ function goHome() {
 function resetQuiz() {
     document.getElementById('results').style.display = 'none';
     document.getElementById('quizContainer').style.display = 'none';
-    document.getElementById('controls').style.display = 'block';
-    
+    document.getElementById('controls').style.display = 'none';
+    document.getElementById('themeSelection').style.display = 'block';
+
     questions = [];
     currentQuestionIndex = 0;
     userAnswers = {};
     score = 0;
     totalQuestions = 0;
     wrongAnswers = [];
+    selectedTheme = null;
 }

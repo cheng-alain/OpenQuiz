@@ -27,6 +27,20 @@ type QCM struct {
 	Questions []Question `json:"questions"`
 }
 
+type Theme struct {
+	ID             string `json:"id"`
+	Title          string `json:"title"`
+	Description    string `json:"description"`
+	Icon           string `json:"icon"`
+	Difficulty     string `json:"difficulty"`
+	QuestionsCount int    `json:"questions_count"`
+	File           string `json:"file"`
+}
+
+type ThemesList struct {
+	Themes []Theme `json:"themes"`
+}
+
 type QCMResponse struct {
 	Title     string     `json:"title"`
 	Questions []Question `json:"questions"`
@@ -45,9 +59,10 @@ type AnswerResult struct {
 }
 
 var qcmData QCM
+var themesList ThemesList
 
 func main() {
-	loadQCMData()
+	loadThemes()
 
 	host := getEnv("HOST", "0.0.0.0")
 	port := getEnv("PORT", "8080")
@@ -57,6 +72,7 @@ func main() {
 	http.Handle("/script.js", http.FileServer(http.Dir("./")))
 
 	http.HandleFunc("/", serveHTML)
+	http.HandleFunc("/api/themes", getThemes)
 	http.HandleFunc("/api/qcm", getQCM)
 	http.HandleFunc("/api/check", checkAnswer)
 
@@ -90,15 +106,41 @@ func getLocalIP() string {
 	return "127.0.0.1"
 }
 
-func loadQCMData() {
-	data, err := ioutil.ReadFile("qcm.json")
+func loadThemes() {
+	data, err := ioutil.ReadFile("themes/themes-list.json")
 	if err != nil {
-		log.Fatal("Error reading qcm.json file:", err)
+		log.Fatal("Error reading themes-list.json file:", err)
+	}
+
+	err = json.Unmarshal(data, &themesList)
+	if err != nil {
+		log.Fatal("Error parsing themes JSON:", err)
+	}
+
+	fmt.Printf("Loaded %d themes\n", len(themesList.Themes))
+}
+
+func loadQCMData(themeID string) error {
+	var themeFile string
+	for _, theme := range themesList.Themes {
+		if theme.ID == themeID {
+			themeFile = theme.File
+			break
+		}
+	}
+
+	if themeFile == "" {
+		return fmt.Errorf("theme not found: %s", themeID)
+	}
+
+	data, err := ioutil.ReadFile(fmt.Sprintf("themes/%s", themeFile))
+	if err != nil {
+		return fmt.Errorf("error reading theme file: %v", err)
 	}
 
 	err = json.Unmarshal(data, &qcmData)
 	if err != nil {
-		log.Fatal("Error parsing JSON:", err)
+		return fmt.Errorf("error parsing JSON: %v", err)
 	}
 
 	var validQuestions []Question
@@ -111,6 +153,7 @@ func loadQCMData() {
 	qcmData.Questions = validQuestions
 
 	fmt.Printf("QCM loaded: %s with %d questions\n", qcmData.Title, len(qcmData.Questions))
+	return nil
 }
 
 func enableCORS(w http.ResponseWriter) {
@@ -123,10 +166,33 @@ func serveHTML(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "index.html")
 }
 
+func getThemes(w http.ResponseWriter, r *http.Request) {
+	enableCORS(w)
+
+	if r.Method == "OPTIONS" {
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(themesList)
+}
+
 func getQCM(w http.ResponseWriter, r *http.Request) {
 	enableCORS(w)
 
 	if r.Method == "OPTIONS" {
+		return
+	}
+
+	themeID := r.URL.Query().Get("theme")
+	if themeID == "" {
+		http.Error(w, "Theme parameter is required", http.StatusBadRequest)
+		return
+	}
+
+	err := loadQCMData(themeID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
