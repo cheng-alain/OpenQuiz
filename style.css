@@ -182,10 +182,6 @@ input[type="number"]:focus {
     background: #f0f4ff;
 }
 
-.option.partially-correct {
-    border-color: #ffc107;
-    background: #fff3cd;
-}
 
 .option.correct {
     border-color: #28a745;
@@ -359,6 +355,21 @@ input[type="number"]:focus {
 
 .wrong-answers-container::-webkit-scrollbar-thumb:hover {
     background: #5a6fd8;
+}
+
+.explanation {
+    margin-top: 15px;
+    padding: 15px;
+    background: #e7f3ff;
+    border: 1px solid #b8daff;
+    border-radius: 8px;
+    color: #004085;
+    font-size: 0.95em;
+    line-height: 1.4;
+}
+
+.explanation strong {
+    color: #003d7a;
 }
 
 .restart-btn {

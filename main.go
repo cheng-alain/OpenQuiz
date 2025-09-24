@@ -15,10 +15,11 @@ import (
 )
 
 type Question struct {
-	ID       int         `json:"id"`
-	Question string      `json:"question"`
-	Options  []string    `json:"options"`
-	Correct  interface{} `json:"correct"`
+	ID          int         `json:"id"`
+	Question    string      `json:"question"`
+	Options     []string    `json:"options"`
+	Correct     interface{} `json:"correct"`
+	Explanation string      `json:"explanation"`
 }
 
 type QCM struct {
@@ -40,6 +41,7 @@ type Answer struct {
 type AnswerResult struct {
 	Correct       bool        `json:"correct"`
 	CorrectAnswer interface{} `json:"correctAnswer"`
+	Explanation   string      `json:"explanation"`
 }
 
 var qcmData QCM
@@ -249,6 +251,7 @@ func checkAnswer(w http.ResponseWriter, r *http.Request) {
 	result := AnswerResult{
 		Correct:       isCorrect,
 		CorrectAnswer: question.Correct,
+		Explanation:   question.Explanation,
 	}
 
 	w.Header().Set("Content-Type", "application/json")

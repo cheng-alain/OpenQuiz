@@ -208,7 +208,8 @@ async function nextQuestion() {
                     userAnswer: userAnswerText,
                     correctAnswer: correctAnswerText,
                     options: question.options,
-                    isMultipleChoice: isMultipleChoice
+                    isMultipleChoice: isMultipleChoice,
+                    explanation: result.explanation || ''
                 });
             }
             
@@ -265,10 +266,6 @@ function showCorrection(result) {
 function updateUI() {
     const question = questions[currentQuestionIndex];
     const isMultipleChoice = Array.isArray(question?.correct) && question.correct.length > 1;
-    
-    // const prevBtn = document.getElementById('prevBtn');
-    // if (prevBtn) prevBtn.disabled = currentQuestionIndex === 0; 
-       
     let hasAnswer = false;
     if (question) {
         if (isMultipleChoice) {
@@ -340,18 +337,12 @@ function displayWrongAnswers() {
                         <span>${wrong.correctAnswer}</span>
                     </div>
                 </div>
+                ${wrong.explanation ? `<div class="explanation"><strong>Explanation:</strong> ${wrong.explanation}</div>` : ''}
             `;
             wrongAnswersContainer.appendChild(wrongQuestionDiv);
         });
     }
 }
-
-// function previousQuestion() {
-//     if (currentQuestionIndex > 0) {
-//         currentQuestionIndex--;
-//         displayQuestion();
-//     }
-// }
 
 function goHome() {
     if (confirm('Are you sure you want to quit the quiz?')) {
