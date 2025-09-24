@@ -10,7 +10,8 @@
         "Java",
         "C++"
       ],
-      "correct": 1
+      "correct": 1,
+      "explanation": "JavaScript is the primary programming language for client-side web development. It runs in the browser and allows developers to create dynamic, interactive web pages by manipulating the DOM, handling events, and communicating with servers."
     },
     {
       "id": 2,
@@ -21,7 +22,8 @@
         "Home Tool Markup Language",
         "Hyperlink and Text Markup Language"
       ],
-      "correct": 0
+      "correct": 0,
+      "explanation": "HTML stands for HyperText Markup Language. It is the standard markup language used to create web pages and web applications, defining the structure and content of documents through the use of tags and elements."
     },
     {
       "id": 3,
@@ -32,7 +34,8 @@
         "bg-color",
         "background"
       ],
-      "correct": 1
+      "correct": 1,
+      "explanation": "The 'background-color' property is the CSS property specifically designed to set the background color of an element. While 'background' is a shorthand property that can also set background color, 'background-color' is the most precise and commonly used property for this purpose."
     },
     {
       "id": 4,
@@ -43,7 +46,8 @@
         "HTTPS",
         "SMTP"
       ],
-      "correct": 2
+      "correct": 2,
+      "explanation": "HTTPS (HyperText Transfer Protocol Secure) is the secure version of HTTP. It uses SSL/TLS encryption to protect data transmission between the client and server, ensuring confidentiality and integrity of the exchanged information."
     },
     {
       "id": 5,
@@ -54,7 +58,8 @@
         "name := string",
         "declare name as string"
       ],
-      "correct": 0
+      "correct": 0,
+      "explanation": "In Go, variables are declared using the 'var' keyword followed by the variable name and its type. The syntax 'var name string' declares a variable called 'name' of type string. Go also supports short variable declaration using ':=' for type inference."
     },
     {
       "id": 6,
@@ -65,7 +70,8 @@
         "80",
         "3000"
       ],
-      "correct": 2
+      "correct": 2,
+      "explanation": "Port 80 is the default port for HTTP (HyperText Transfer Protocol). When you access a website without specifying a port (like http://example.com), the browser automatically uses port 80. Port 443 is used for HTTPS, while 8080 and 3000 are commonly used for development servers."
     },
     {
       "id": 7,
@@ -76,7 +82,8 @@
         "<href>",
         "<url>"
       ],
-      "correct": 1
+      "correct": 1,
+      "explanation": "The <a> (anchor) tag is used to create hyperlinks in HTML. The 'href' attribute specifies the destination URL. The <link> tag is used for linking external resources like stylesheets, not for creating clickable links."
     },
     {
       "id": 8,
@@ -87,7 +94,8 @@
         "Completely removes the element from the render flow",
         "Changes the color to transparent"
       ],
-      "correct": 2
+      "correct": 2,
+      "explanation": "'display: none' completely removes the element from the document flow, making it invisible and not taking up any space. This is different from 'visibility: hidden' which hides the element but preserves its space in the layout."
     },
     {
       "id": 9,
@@ -98,7 +106,8 @@
         ".gol",
         ".g"
       ],
-      "correct": 1
+      "correct": 1,
+      "explanation": "Go source code files use the .go file extension. This is the standard and only recognized extension for Go programming language files, making them easily identifiable by editors, IDEs, and build tools."
     },
     {
       "id": 10,
@@ -109,7 +118,8 @@
         "getElement()",
         "findById()"
       ],
-      "correct": 1
+      "correct": 1,
+      "explanation": "document.getElementById() is the standard DOM method used to select an element by its unique ID attribute. It returns the element object if found, or null if no element with the specified ID exists in the document."
     }
   ]
 }
