@@ -8,6 +8,15 @@
       "difficulty": "Intermediate",
       "questions_count": 10,
       "file": "web-programming.json"
+    },
+    {
+      "id": "general-culture",
+      "title": "General Culture",
+      "description": "Test your general knowledge with 10 questions covering various topics",
+      "icon": "GLOBE",
+      "difficulty": "Beginner",
+      "questions_count": 10,
+      "file": "general-culture.json"
     }
   ]
 }

@@ -1,0 +1,125 @@
+{
+  "title": "General Culture",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is the capital of Australia?",
+      "options": [
+        "Sydney",
+        "Melbourne",
+        "Canberra",
+        "Perth"
+      ],
+      "correct": 2,
+      "explanation": "Canberra is the capital of Australia, not Sydney which is the largest city."
+    },
+    {
+      "id": 2,
+      "question": "Which planet is known as the Red Planet?",
+      "options": [
+        "Venus",
+        "Mars",
+        "Jupiter",
+        "Saturn"
+      ],
+      "correct": 1,
+      "explanation": "Mars is called the Red Planet due to iron oxide (rust) on its surface."
+    },
+    {
+      "id": 3,
+      "question": "Who wrote the novel '1984'?",
+      "options": [
+        "Aldous Huxley",
+        "George Orwell",
+        "Ray Bradbury",
+        "H.G. Wells"
+      ],
+      "correct": 1,
+      "explanation": "George Orwell wrote the dystopian novel '1984' published in 1949."
+    },
+    {
+      "id": 4,
+      "question": "What is the largest ocean on Earth?",
+      "options": [
+        "Atlantic Ocean",
+        "Indian Ocean",
+        "Arctic Ocean",
+        "Pacific Ocean"
+      ],
+      "correct": 3,
+      "explanation": "The Pacific Ocean is the largest ocean, covering about 46% of Earth's water surface."
+    },
+    {
+      "id": 5,
+      "question": "Which element has the chemical symbol 'O'?",
+      "options": [
+        "Gold",
+        "Oxygen",
+        "Silver",
+        "Iron"
+      ],
+      "correct": 1,
+      "explanation": "O is the chemical symbol for Oxygen on the periodic table."
+    },
+    {
+      "id": 6,
+      "question": "In which year did World War II end?",
+      "options": [
+        "1944",
+        "1945",
+        "1946",
+        "1947"
+      ],
+      "correct": 1,
+      "explanation": "World War II ended in 1945 with the surrender of Japan in September."
+    },
+    {
+      "id": 7,
+      "question": "What is the smallest country in the world?",
+      "options": [
+        "Monaco",
+        "San Marino",
+        "Vatican City",
+        "Liechtenstein"
+      ],
+      "correct": 2,
+      "explanation": "Vatican City is the smallest country in the world with an area of just 0.17 square miles."
+    },
+    {
+      "id": 8,
+      "question": "Who painted the Mona Lisa?",
+      "options": [
+        "Vincent van Gogh",
+        "Pablo Picasso",
+        "Leonardo da Vinci",
+        "Michelangelo"
+      ],
+      "correct": 2,
+      "explanation": "Leonardo da Vinci painted the Mona Lisa between 1503 and 1519."
+    },
+    {
+      "id": 9,
+      "question": "What is the longest river in the world?",
+      "options": [
+        "Amazon River",
+        "Nile River",
+        "Mississippi River",
+        "Yangtze River"
+      ],
+      "correct": 1,
+      "explanation": "The Nile River is generally considered the longest river in the world at about 4,135 miles."
+    },
+    {
+      "id": 10,
+      "question": "How many continents are there?",
+      "options": [
+        "5",
+        "6",
+        "7",
+        "8"
+      ],
+      "correct": 2,
+      "explanation": "There are 7 continents: Asia, Africa, North America, South America, Antarctica, Europe, and Australia/Oceania."
+    }
+  ]
+}
