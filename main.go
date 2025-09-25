@@ -107,7 +107,7 @@ func getLocalIP() string {
 }
 
 func loadThemes() {
-	data, err := ioutil.ReadFile("themes/themes-list.json")
+	data, err := ioutil.ReadFile("themes-list.json")
 	if err != nil {
 		log.Fatal("Error reading themes-list.json file:", err)
 	}
